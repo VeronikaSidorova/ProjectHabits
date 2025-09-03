@@ -1,9 +1,10 @@
-from celery import shared_task
 import requests
+from celery import shared_task
 from django.utils import timezone
 
-from config.settings import TELEGRAM_URL, TELEGRAM_BOT_TOKEN
+from config.settings import TELEGRAM_BOT_TOKEN, TELEGRAM_URL
 from habits.models import Habit
+
 
 @shared_task
 def send_telegram_message(chat_id, text):

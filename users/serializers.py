@@ -19,6 +19,7 @@ class UserSerializer(ModelSerializer):
             "telegram_chat_id",
         )
 
+
 class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = User
