@@ -25,5 +25,5 @@ def send_due_reminders():
     for habit in habits_due:
         user = habit.user
         if user.telegram_chat_id:
-            text = f"Напоминание: пора выполнить привычку '{habit.action}'!"
+            text = f"Напоминание: пора выполнить привычку '{habit.action}'! Вознаграждение: '{habit.reward}'"
             send_telegram_message.delay(user.telegram_chat_id, text)
