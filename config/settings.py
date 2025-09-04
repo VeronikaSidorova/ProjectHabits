@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     "habits",
     "django_celery_beat",
     "drf_yasg",
-    "corsheaders",
+    # "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -38,7 +38,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -148,3 +148,10 @@ CELERY_BEAT_SCHEDULE = {
 TELEGRAM_URL = "https://api.telegram.org/bot"
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",  # Пример для React/Vue
+#     "http://127.0.0.1:8000",
+# ]
+#
+# CORS_ALLOW_ALL_ORIGINS = True
