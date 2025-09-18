@@ -77,7 +77,7 @@ class HabitTestCase(APITestCase):
                     "action": "Идти спать",
                     "estimated_time_seconds": 60,
                     "frequency_days": 1,
-                    "id": 2,
+                    "id": 6,
                     "is_pleasant": False,
                     "is_public": True,
                     "place": "Дом",

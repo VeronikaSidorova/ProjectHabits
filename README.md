@@ -65,3 +65,19 @@ celery -A config worker --beat --scheduler django --loglevel=info
 Celery Beat каждую минуту запускает задачу send_due_reminders.
 Задача получает текущее время без секунд, ищет привычки с совпадающим временем.
 Для каждой такой привычки отправляется Telegram-сообщение пользователю.
+
+## Установка и Запуск Локально
+
+1. **Клонируйте репозиторий**:
+   ```https://github.com/VeronikaSidorova/ProjectHabits```
+2. Настройте переменные окружения (из .env.sample)
+3. Запустите контейнеры: \
+```docker-compose up``` \
+Приложение будет доступно на http://localhost:8080 (Nginx). \
+PostgreSQL на localhost:5433. \
+Redis на localhost:6379. \
+4. Проверьте состояние: \
+```docker-compose ps``` \
+```docker-compose logs celery```  # Для Celery \
+Healthchecks настроены для Redis, Celery. Если что-то не работает, проверьте логи.
+
