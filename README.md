@@ -81,3 +81,11 @@ Redis на localhost:6379. \
 ```docker-compose logs celery```  # Для Celery \
 Healthchecks настроены для Redis, Celery. Если что-то не работает, проверьте логи.
 
+## Инструкция по настройке сервера и CI/CD:
+### Настройка сервера
+1. Установите Docker и Docker Compose на сервере. 
+2. Настройте SSH-доступ для деплоя через GitHub Actions.
+
+### Настройка CI/CD
+1. Создайте новый SSH-ключ и добавьте его в секреты GitHub репозитория.
+2. Добавьте конфигурацию GitHub Actions в `.github/workflows/ci.yaml` для автоматического деплоя при пуше в основную ветку.
