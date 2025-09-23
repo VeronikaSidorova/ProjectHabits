@@ -1,4 +1,5 @@
 import os
+import sys
 from datetime import timedelta
 from pathlib import Path
 
@@ -150,9 +151,18 @@ TELEGRAM_URL = "https://api.telegram.org/bot"
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:8000",  # Пример для React/Vue
-#     "http://127.0.0.1:8000",
-# ]
-#
-# CORS_ALLOW_ALL_ORIGINS = True
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "test_db.sqlite3",
+        }
+    }
+    CELERY_BROKER_URL = "memory://"
+    CELERY_RESULT_BACKEND = "memory://"
+    CELERY_ALWAYS_EAGER = True
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        }
+    }
