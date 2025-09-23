@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_DB: ${NAME}
-      POSTGRES_USER: ${USER}
-      POSTGRES_PASSWORD: ${PASSWORD}
+      - POSTGRES_DB=${NAME}
+      - POSTGRES_USER=${USER}
+      - POSTGRES_PASSWORD=${PASSWORD}
     volumes:
       - pg_data:/var/lib/postgresql/data/
     ports:
