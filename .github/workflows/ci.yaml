@@ -42,6 +42,13 @@ jobs:
           pip install poetry
           poetry install --no-root
 
+      - name: Set SECRET_KEY and apply migrations
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          echo "SECRET_KEY=$SECRET_KEY" > .env
+          poetry run python manage.py migrate
+
       - name: Run tests
         run: poetry run python manage.py test
 
