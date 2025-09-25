@@ -32,6 +32,7 @@ services:
     environment:
       HOST: host.docker.internal
       CELERY_BROKER_URL: "redis://redis:6379"
+      SECRET_KEY: ffhhjjb
 
     depends_on:
       db:
