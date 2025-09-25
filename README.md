@@ -58,7 +58,7 @@ celery -A config worker --beat --scheduler django --loglevel=info
 ```
 - Запустите Django-сервер:
 ```python manage.py runserver```
-- 
+
 ## Как работает
 
 Пользователь создаёт привычку с указанием времени (часы и минуты, секунды установите "00").
