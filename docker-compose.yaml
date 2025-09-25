@@ -1,0 +1,92 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=${NAME}
+      - POSTGRES_USER=${USER}
+      - POSTGRES_PASSWORD=${PASSWORD}
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: pg_isready -U ${USER} -d ${NAME}
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 1s
+      retries: 5
+
+  backend:
+    build: .
+    command: bash -c "python manage.py migrate && python manage.py collectstatic -c --no-input && python manage.py runserver 0.0.0.0:8000"
+    env_file: .env
+    environment:
+      HOST: host.docker.internal
+      CELERY_BROKER_URL: "redis://redis:6379"
+      SECRET_KEY: ffhhjjb
+
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+    ports:
+      - "8080:8000"
+    volumes:
+      - django_static:/app/static/
+
+  web:
+    image: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_started
+    volumes:
+      - django_static:/usr/share/nginx/html/static/
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+  celery:
+    build: .
+    command: poetry run celery -A config worker --loglevel=info
+    env_file: .env
+    environment:
+      HOST: host.docker.internal
+      CELERY_BROKER_URL: "redis://redis:6379"
+      SECRET_KEY: ffhhjjb
+    depends_on:
+      backend:
+        condition: service_started
+    healthcheck:
+      test: [ "CMD", "celery", "inspect", "ping", "-d"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  celery_beat:
+    build: .
+    command: poetry run celery -A config beat --loglevel=info
+    env_file:
+      - .env
+    environment:
+      HOST: host.docker.internal
+      CELERY_BROKER_URL: "redis://redis:6379"
+      SECRET_KEY: ffhhjjb
+    depends_on:
+      celery:
+        condition: service_healthy
+
+volumes:
+  pg_data:
+  django_static:
